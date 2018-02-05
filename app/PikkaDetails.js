@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import { StackNavigator } from 'react-navigation';
-import { View, ScrollView, ListView, Text, TextInput, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableHighlight, Text, TextInput, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import ActionBar from './ActionBar';
-import PikkaListItem from './PikkaListItem';
 import * as pikkaService from './services/pikka-service-localstore';
 
 export default class PikkaDetails extends Component {
@@ -10,8 +8,9 @@ export default class PikkaDetails extends Component {
 
     constructor(props) {
         super(props);
-        pikkaService.findById(this.props.navigation.state.params.data.name).then(pikka => {
+        pikkaService.findById(pikkaService.pikkaId(this.props.navigation.state.params.data)).then(pikka => {
             this.setState({
+                pikkaOrg: Object.assign({}, pikka),
                 pikka: pikka
             });
         });
@@ -24,7 +23,7 @@ export default class PikkaDetails extends Component {
                 <View style={styles.container}>
                     <View style={styles.header}>
                         <Image source={{uri: pikka.picture}} style={styles.picture} />
-                        <ActionBar pikka={pikka} navigator={this.props.navigation}/>
+                        <ActionBar pikka={pikka} pikkaOrg={this.state.pikkaOrg} navigator={this.props.navigation} parent={this.props.navigation.state.params.parent} />
                     </View>
                     <ScrollView >
                         <View >

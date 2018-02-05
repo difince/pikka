@@ -1,42 +1,43 @@
 import React, {Component} from 'react';
-import { StackNavigator } from 'react-navigation';
 import {View, Text, Image, StyleSheet, TouchableOpacity, Linking} from 'react-native';
 
 import * as pikkaService from './services/pikka-service-localstore';
 
 export default class ActionBar extends Component {
 
+    navigateToList() {
+        pikkaService.getSortedKeys().then(ids => {
+            pikkaService.findAll().then(pikkas => {
+                // console.warn("order: " + JSON.stringify(ids) + "\ndata: " + JSON.stringify(pikkas));
+                this.props.navigator.navigate('PikkaList', {dataOrder: ids, dataSource: pikkas});
+            });
+        });
+
+    }
+
     savePikka() {
-        pikkaService.savePikka(this.props.pikka);
-        this.props.navigator.navigate('PikkaList');
-        // this.props.navigator.push({name: 'pikka-list'});
-        // alert(this.props.mobilePhone);
-        //this.openURL('sms:' + this.props.mobilePhone);
+        pikkaService.savePikka(this.props.pikka).then(pikka => {
+            if (pikkaService.pikkaId(this.props.pikka) != pikkaService.pikkaId(this.props.pikkaOrg)) {
+                pikkaService.deletePikka(this.props.pikkaOrg).then(pikka => {
+                    this.navigateToList();
+                });
+            } else {
+                this.navigateToList();
+            }
+        });
     }
 
     deletePikka() {
-        pikkaService.deletePikka(this.props.pikka);
-        this.props.navigator.navigate('PikkaList', { });
-        // this.props.navigator.push({name: 'pikka-list'});
-        // alert(this.props.email);
-        // this.openURL('mailto:' + this.props.email);
+        pikkaService.deletePikka(this.props.pikka).then(pikka => {
+            this.navigateToList();
+        });
     }
-
-    // openURL(url) {
-    //     Linking.canOpenURL(url).then(supported => {
-    //         if (!supported) {
-    //             console.log('Can\'t handle url: ' + url);
-    //         } else {
-    //             return Linking.openURL(url);
-    //         }
-    //     }).catch(err => console.error('An error occurred', err));
-    // }
 
     render() {
         return (
             <View style={styles.container}>
                 <TouchableOpacity onPress={this.savePikka.bind(this)} style={styles.action}>
-                    <Text style={styles.actionText}>Save</Text>
+                    <Text style={styles.actionText}>Update</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.deletePikka.bind(this)} style={styles.action}>
                     <Text style={styles.actionText}>Delete</Text>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { StackNavigator } from 'react-navigation';
 import { View, Text, Image, TouchableHighlight, StyleSheet } from 'react-native';
 
 import * as SnmpService from './services/snmp';
@@ -50,8 +49,7 @@ export default class PikkaListItem extends Component {
 
     showDetails() {
         const { navigate } = this.props.parent.props.navigation;
-        navigate('PikkaDetails', { data: this.props.data });
-        // this.props.navigator.push({name: 'details', data: this.props.data});
+        navigate('PikkaDetails', { data: this.props.data, parent: this.props.parent});
     }
 
     togglePikka() {
@@ -78,21 +76,24 @@ export default class PikkaListItem extends Component {
     }
 
     render() {
+        if (this.props.data == null) return (<View><Text></Text></View>);
+
         return (
             <View style={styles.container}>
-                <TouchableHighlight style={styles.info} onPress={this.showDetails.bind(this)} underlayColor={'#EEEEEE'}>
+                <TouchableHighlight style={styles.info} onPress={this.showDetails.bind(this)} underlayColor={'#ffffff'}
+                                    {...this.props.sortHandlers}>
                     <View style={styles.info}>
                         <Image source={{uri: this.props.data.picture}} style={styles.picture} />
                         <View>
                             <Text>{this.props.data.name}</Text>
-                            <Text style={styles.title}>{this.props.data.ip}</Text>
+                            <Text style={styles.title}>{this.props.parent.state.config.showIp ? this.props.data.ip : ''}</Text>
                         </View>
                     </View>
                 </TouchableHighlight>
                 
                 <View style={styles.controls}>
                     <TouchableHighlight onPress={this.updateState.bind(this)} underlayColor={'white'}>
-                        <Image source={require('./assets/refresh.jpg')} style={styles.picture}/>
+                        <Image source={require('./assets/refresh.png')} style={styles.picture}/>
                     </TouchableHighlight>
                     <TouchableHighlight onPress={this.togglePikka.bind(this)} underlayColor={'white'}>
                         <Image source={toggleImages[this.state.toggleState]} style={styles.picture}/>
@@ -120,8 +121,8 @@ const styles = StyleSheet.create({
         flex: 2
     },
     picture: {
-        width: 40,
-        height: 40,
+        width: 60,
+        height: 60,
         borderRadius: 20,
         marginRight: 8
     },
