@@ -33,7 +33,7 @@ export let defaultConfig = function (){
 
 export let newPikka = function (){
     return {
-        name: "default",
+        name: "",
         ip: "172.16.100.2",
         port: "161",
         oid: ".1.3.6.1.4.1.19865.1.2.1.1.0",

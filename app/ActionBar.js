@@ -17,7 +17,7 @@ export default class ActionBar extends Component {
 
     savePikka() {
         pikkaService.savePikka(this.props.pikka).then(pikka => {
-            if (pikkaService.pikkaId(this.props.pikka) != pikkaService.pikkaId(this.props.pikkaOrg)) {
+            if (this.props.pikkaOrg != null && pikkaService.pikkaId(this.props.pikka) != pikkaService.pikkaId(this.props.pikkaOrg)) {
                 pikkaService.deletePikka(this.props.pikkaOrg).then(pikka => {
                     this.navigateToList();
                 });

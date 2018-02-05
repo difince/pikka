@@ -8,11 +8,14 @@ export default class PikkaDetails extends Component {
 
     constructor(props) {
         super(props);
-        pikkaService.findById(pikkaService.pikkaId(this.props.navigation.state.params.data)).then(pikka => {
-            this.setState({
-                pikkaOrg: Object.assign({}, pikka),
-                pikka: pikka
-            });
+    }
+
+    componentWillMount() {
+        let pikka = this.props.navigation.state.params.data;
+        //pikkaService.findById(pikkaService.pikkaId(this.props.navigation.state.params.data)).then(pikka => {
+        this.setState({
+            pikkaOrg: pikka != null ? Object.assign({}, pikka): null,
+            pikka: pikka != null ? pikka: pikkaService.newPikka()
         });
     }
 

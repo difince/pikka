@@ -56,7 +56,7 @@ export default class PikkaList extends Component {
 
     addPikka() {
         const { navigate } = this.props.navigation;
-        navigate('PikkaDetails', { data:  pikkaService.newPikka() });
+        navigate('PikkaDetails', { } );
     }
 
     config() {
@@ -71,7 +71,7 @@ export default class PikkaList extends Component {
             <View style={styles.container}>
 
                 <View style={styles.header}>
-                    <SearchBar onChange={this.search.bind(this)} />
+                    <SearchBar onChange={this.search.bind(this)}  style={styles.searchBar}/>
                 </View>
 
                 <View style={styles.list}>
@@ -115,8 +115,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#AAAAAA',
     },
     header: {
-        flex: 1,
+        minHeight: 60,
         alignItems: 'center'
+    },
+    searchBar: {
     },
     footer: {
         flex: 1,

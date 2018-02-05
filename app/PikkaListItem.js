@@ -28,6 +28,7 @@ export default class PikkaListItem extends Component {
         //         return { toggleState: 0 };
         //     });
         });
+
     }
 
     updateState() {
@@ -92,11 +93,11 @@ export default class PikkaListItem extends Component {
                 </TouchableHighlight>
                 
                 <View style={styles.controls}>
-                    <TouchableHighlight onPress={this.updateState.bind(this)} underlayColor={'white'}>
-                        <Image source={require('./assets/refresh.png')} style={styles.picture}/>
-                    </TouchableHighlight>
                     <TouchableHighlight onPress={this.togglePikka.bind(this)} underlayColor={'white'}>
                         <Image source={toggleImages[this.state.toggleState]} style={styles.picture}/>
+                    </TouchableHighlight>
+                    <TouchableHighlight onPress={this.updateState.bind(this)} underlayColor={'white'}>
+                        <Image source={require('./assets/refresh.png')} style={styles.picture}/>
                     </TouchableHighlight>
                 </View>
             </View>
@@ -109,16 +110,15 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 8
     },    
     info: {
-        flex: 4,
+        flex: 5,
         flexDirection: 'row',
-        padding: 8
+        margin: 5
     },    
     controls: {
-        flexDirection: 'row',
-        flex: 2
+        flex: 1,
+        flexDirection: 'row-reverse',
     },
     picture: {
         width: 60,
